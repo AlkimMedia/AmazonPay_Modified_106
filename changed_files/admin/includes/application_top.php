@@ -64,7 +64,7 @@ define('DIR_FS_EXTERNAL', DIR_FS_CATALOG . 'includes/external/');
  */
 if (file_exists(DIR_FS_CATALOG.'export/_error_reporting.all') || file_exists(DIR_FS_CATALOG.'export/_error_reporting.admin')) {
   @ini_set('display_errors', true);
-  error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED); //exlude E_STRICT on PHP 5.4
+  error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT); //exlude E_STRICT on PHP 5.4
 } elseif (file_exists(DIR_FS_CATALOG.'export/_error_reporting.dev')) {
   @ini_set('display_errors', true);
   error_reporting(-1); // Development value
