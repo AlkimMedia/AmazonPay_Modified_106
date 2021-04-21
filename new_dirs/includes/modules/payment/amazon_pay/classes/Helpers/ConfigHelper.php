@@ -45,7 +45,7 @@ class ConfigHelper
 
     public function getCheckoutResultReturnUrl()
     {
-        return str_replace('http://', 'https://', xtc_href_link(FILENAME_CHECKOUT_PROCESS, '', 'SSL')); //TODO remove replace
+        return xtc_href_link(FILENAME_CHECKOUT_PROCESS, '', 'SSL');
     }
 
     public function getCheckoutSessionAjaxUrl()
@@ -215,7 +215,7 @@ class ConfigHelper
 
         return $return;
     }
-    
+
     public function initKey(){
         if(!file_exists($this->getPrivateKeyPath()) || !file_exists($this->getPublicKeyPath())){
             $this->resetKey();
@@ -261,5 +261,9 @@ class ConfigHelper
     public function getPluginVersion()
     {
         return Config::PLUGIN_VERSION;
+    }
+    
+    public function getCustomInformationString(){
+        return 'Created by AlkimMedia, modified1, V'.$this->getPluginVersion();
     }
 }
