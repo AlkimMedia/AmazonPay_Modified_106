@@ -11,6 +11,9 @@ if (!empty($_GET['amazonCheckoutSessionId'])) {
     $checkoutSession                     = $checkoutHelper->getCheckoutSession($checkoutSessionId);
     $needsMainAddress                    = false;
     if (!$accountHelper->isLoggedIn()) {
+        if(!$checkoutSession->getBuyer()){
+            xtc_redirect(xtc_href_link(FILENAME_SHOPPING_CART, 'amazon_pay_error=1'));
+        }
         $name        = $checkoutSession->getBuyer()->getName();
         $t           = explode(' ', $name);
         $lastNameKey = max(array_keys($t));
@@ -38,6 +41,9 @@ if (!empty($_GET['amazonCheckoutSessionId'])) {
 
         xtc_db_perform(TABLE_CUSTOMERS, $sql_data_array);
         $_SESSION['customer_id'] = xtc_db_insert_id();
+		xtc_db_perform(TABLE_CUSTOMERS_INFO, [
+            'customers_info_id' => $_SESSION['customer_id'],
+        ]);
         $needsMainAddress        = true;
     }
     if ($shippingAddress = $checkoutSession->getShippingAddress()) {
@@ -58,6 +64,7 @@ if (!empty($_GET['amazonCheckoutSessionId'])) {
 
     if ($needsMainAddress) {
         xtc_db_perform(TABLE_CUSTOMERS, ['customers_default_address_id' => $_SESSION['billto']], 'update', 'customers_id = ' . (int)$_SESSION['customer_id']);
+        $accountHelper->doLogin($_SESSION['customer_id']);
     }
 
     $_SESSION['payment'] = $configHelper->getPaymentMethodName();
