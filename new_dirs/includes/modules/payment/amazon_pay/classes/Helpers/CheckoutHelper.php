@@ -177,7 +177,7 @@ class CheckoutHelper
                             });
                          }
                     }catch(e){
-                        console.warn(e);
+                        //console.warn(e);
                     }
                     
                     try{
@@ -198,7 +198,7 @@ class CheckoutHelper
                             });
                         }
                     }catch(e){
-                        console.warn(e);
+                        //console.warn(e);
                     }
                     
                     try{

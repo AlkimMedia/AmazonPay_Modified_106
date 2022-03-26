@@ -290,7 +290,7 @@ class ConfigHelper
     }
 
     public function getCustomInformationString(){
-        return 'Created by AlkimMedia, modified1, V'.$this->getPluginVersion();
+        return 'Created by AlkimMedia, '.Config::PLATFORM_NAME.', V'.$this->getPluginVersion();
     }
 
     public function getLedgerCurrency()
