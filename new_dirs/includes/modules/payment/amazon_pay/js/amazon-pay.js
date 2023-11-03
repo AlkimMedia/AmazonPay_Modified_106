@@ -1,6 +1,6 @@
 const alkimAmazonPay = {
-    payButtonCount:0,
-    initCheckout: function(){
+    payButtonCount: 0,
+    initCheckout: function () {
         console.log('would start checkout');
     },
     ajaxPost: function (form, callback) {
@@ -9,7 +9,7 @@ const alkimAmazonPay = {
         const fields = form.querySelectorAll('input, select, textarea');
         for (let i = 0; i < fields.length; i++) {
             const field = fields[i];
-            if(field.name && field.value) {
+            if (field.name && field.value) {
                 params.push(encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value));
             }
         }
@@ -18,12 +18,12 @@ const alkimAmazonPay = {
         xhr.onload = callback.bind(xhr);
         xhr.send(params.join('&'));
     }
-}
+};
 
 
 const commentsInput = document.getElementById('checkout-confirmation-comments-input');
-if(commentsInput){
-    commentsInput.addEventListener('keyup', function(){
+if (commentsInput) {
+    commentsInput.addEventListener('keyup', function () {
         document.getElementById('checkout-confirmation-comments').value = commentsInput.value;
     });
 }

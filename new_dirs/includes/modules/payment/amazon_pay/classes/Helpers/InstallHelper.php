@@ -71,7 +71,7 @@ class InstallHelper
         )
         ");
     }
-	
+
     public function process(){
         $this->addTable();;
         $this->addConfiguration();
@@ -92,7 +92,7 @@ class InstallHelper
         }
         if($configHelper->getConfigurationValue('APC_VERSION') !== $configHelper->getPluginVersion()){
             $this->addConfiguration();
-			$this->addLogTable();
+            $this->addLogTable();
             if($configHelper->getConfigurationValue('APC_VERSION') === null){
                 $configHelper->addConfigurationValue('APC_VERSION', $configHelper->getPluginVersion());
             }else{

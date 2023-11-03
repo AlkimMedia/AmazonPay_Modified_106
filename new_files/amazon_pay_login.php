@@ -50,9 +50,9 @@ if ($r = xtc_db_fetch_array($rs)) {
         'customers_info_id' => $customerId,
     ]);
     
-    $address = new AmazonPayExtendedSdk\Struct\Address($buyer['shippingAddress']);
+    $address = new AmazonPayApiSdkExtension\Struct\Address($buyer['shippingAddress']);
     $addressBookSqlArray = $accountHelper->convertAddressToArray($address);
-
+    
     $addressId = (int)$accountHelper->createAddress($address, $customerId);
     xtc_db_perform(TABLE_CUSTOMERS, ['customers_default_address_id' => $addressId], 'update', 'customers_id = ' . (int)$customerId);
 

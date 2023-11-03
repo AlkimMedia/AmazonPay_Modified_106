@@ -48,13 +48,13 @@ if (!empty($_GET['amazon_pay_action'])) {
                 break;
             case 'refund':
                 $originalCharge = $apiClient->getCharge($_GET['charge_id']);
-                if ($originalCharge->getStatusDetails()->getState() !== \AmazonPayExtendedSdk\Struct\StatusDetails::CAPTURED) {
+                if ($originalCharge->getStatusDetails()->getState() !== \AmazonPayApiSdkExtension\Struct\StatusDetails::CAPTURED) {
                     $transactionHelper->updateCharge($originalCharge);
                 } else {
                     $chargeTransaction = $transactionHelper->getTransaction($originalCharge->getChargeId());
-                    $refund            = new \AmazonPayExtendedSdk\Struct\Refund();
+                    $refund            = new \AmazonPayApiSdkExtension\Struct\Refund();
                     $refund->setChargeId($originalCharge->getChargeId());
-                    $amount = new \AmazonPayExtendedSdk\Struct\RefundAmount($originalCharge->getCaptureAmount()->toArray());
+                    $amount = new \AmazonPayApiSdkExtension\Struct\RefundAmount($originalCharge->getCaptureAmount()->toArray());
                     $amount->setAmount((float)$_POST['amount']);
                     $refund->setRefundAmount($amount);
                     $refund                     = $apiClient->createRefund($refund);
@@ -74,10 +74,10 @@ if (!empty($_GET['amazon_pay_action'])) {
             case 'create_charge':
                 $chargePermissionTransaction = $transactionHelper->getTransaction($_GET['charge_permission_id']);
 
-                $amount = new \AmazonPayExtendedSdk\Struct\ChargeAmount();
+                $amount = new \AmazonPayApiSdkExtension\Struct\ChargeAmount();
                 $amount->setAmount((float)$_POST['amount'])->setCurrencyCode($chargePermissionTransaction->currency);
 
-                $charge = new \AmazonPayExtendedSdk\Struct\Charge();
+                $charge = new \AmazonPayApiSdkExtension\Struct\Charge();
                 $charge->setChargePermissionId($_GET['charge_permission_id'])
                     ->setCanHandlePendingAuthorization($configHelper->canHandlePendingAuth())
                     ->setChargeAmount($amount);
@@ -94,5 +94,9 @@ if (!empty($_GET['amazon_pay_action'])) {
     xtc_redirect(xtc_href_link('orders.php', xtc_get_all_get_params(['amazon_pay_action']), 'SSL'));
 }
 
-$orderHelper = new \AlkimAmazonPay\OrderHelper();
-$orderHelper->doShippingCapture();
+try{
+    $orderHelper = new \AlkimAmazonPay\OrderHelper();
+    $orderHelper->doShippingCapture();
+}catch(Exception $e){
+    \AlkimAmazonPay\GeneralHelper::log('error', 'shipping capture error', [$e->getMessage(), $e->getTraceAsString()]);
+}

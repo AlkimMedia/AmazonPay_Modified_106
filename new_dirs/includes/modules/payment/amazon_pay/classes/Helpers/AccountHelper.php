@@ -2,7 +2,7 @@
 
 namespace AlkimAmazonPay;
 
-use AmazonPayExtendedSdk\Struct\Address;
+use AmazonPayApiSdkExtension\Struct\Address;
 
 class AccountHelper
 {
@@ -170,7 +170,7 @@ class AccountHelper
         xtc_db_perform(TABLE_ADDRESS_BOOK, $address_book_sql_array);
         return xtc_db_insert_id();
     }
-
+    
     public function doLogin($customerId){
         $customerId = (int)$customerId;
         $q = "SELECT * FROM ".TABLE_CUSTOMERS." c LEFT JOIN ".TABLE_ADDRESS_BOOK." a ON (c.customers_default_address_id = a.address_book_id) WHERE c.customers_id = ".$customerId;
